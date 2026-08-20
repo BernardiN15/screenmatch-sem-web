@@ -22,8 +22,8 @@ public class Principal {
 
     public void exibirMenu(){
         var opcao=-1;
-       while(opcao!=0) {
-           String menu = """
+        while(opcao!=0) {
+            String menu = """
                    1 - Buscar serie
                    2 - Buscar episódio
                    3 - Listar series buscadas
@@ -31,28 +31,28 @@ public class Principal {
                    0 - Sair
                    """;
 
-           System.out.println(menu);
-           System.out.println("diga o seu numero:");
-           opcao = leitor.nextInt();
-           leitor.nextLine();
-           switch (opcao) {
-               case 1:
-                   buscarSerieWeb();
-                   break;
-               case 2:
-                   episodiosPorSerie();
-                   break;
-               case 3:
-                   listarSeriesBuscadas();
-                   break;
-               case 0:
-                   break;
-               default:
-                   System.out.println("opção invalida!");
-                   break;
+            System.out.println(menu);
+            System.out.println("diga o seu numero:");
+            opcao = leitor.nextInt();
+            leitor.nextLine();
+            switch (opcao) {
+                case 1:
+                    buscarSerieWeb();
+                    break;
+                case 2:
+                    episodiosPorSerie();
+                    break;
+                case 3:
+                    listarSeriesBuscadas();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("opção invalida!");
+                    break;
 
-           }
-       }
+            }
+        }
 //        DadosTemporada dadosTemporada;
 //        List<DadosTemporada> listaTemporadas=new ArrayList<>();
 //        for(int i=1;i<=getDadosSeries().totalTemporadas();i++){
@@ -127,12 +127,12 @@ public class Principal {
 
     private void listarSeriesBuscadas() {
         List<Serie>series= this.listaSeries.stream()
-                        .map(e->new Serie(e))
+                .map(e->new Serie(e))
                 .collect(Collectors.toList());
 
-         series.stream()
-                         .sorted(Comparator.comparing(Serie::getGenero))
-                                 .forEach(System.out::println);
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGenero))
+                .forEach(System.out::println);
 
 
     }
@@ -153,7 +153,7 @@ public class Principal {
         episodios.forEach(System.out::println);
 
 
-}
+    }
 
     public DadosSeries getListaSeries(){
         System.out.println("digite o nome da serie para busca:");
@@ -170,6 +170,5 @@ public class Principal {
         listaSeries.add(dados);
 
     }
-
 
 }

@@ -1,18 +1,29 @@
 package br.com.alura.screenmatch.model;
 
 import br.com.alura.screenmatch.service.ConsultaGemini;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
-
+@Entity
+@Table(name = "Series")
 public class Serie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
     private String titulo;
     private Integer totalTemporadas;
     private Double avaliacao;
+    @Enumerated(EnumType.STRING)
     private Categoria genero;
     private String poster;
     private String sinopse;
     private String atores;
-    private ConsultaGemini consultaGemini =new ConsultaGemini();
+    @Transient
+    private List<Episodio> episodios=new ArrayList<>();
+
 
     public Serie(DadosSeries e){
         this.titulo = e.titulo();
@@ -20,10 +31,18 @@ public class Serie {
         this.avaliacao = OptionalDouble.of(Double.valueOf(e.avaliacao())).orElse(0.0);
         this.genero = Categoria.fromString(e.genero().split(",")[0].trim());
         this.poster = e.poster();
-        this.sinopse = consultaGemini.traduzir(e.sinopse().trim());
+        this.sinopse = ConsultaGemini.traduzir(e.sinopse().trim());
         this.atores = e.atores();
 
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitulo() {

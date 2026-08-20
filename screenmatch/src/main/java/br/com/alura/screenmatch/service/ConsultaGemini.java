@@ -6,10 +6,11 @@ import com.google.genai.types.GenerateContentResponse;
 public class ConsultaGemini {
 
     private static final String MODELO = "gemini-3-flash-preview";
+    private static final ConsultaGemini INSTANCE = new ConsultaGemini();
 
     private final Client client;
 
-    public ConsultaGemini() {
+    private ConsultaGemini() {
         String apiKey = System.getenv("GEMINI_API_KEY");
 
         if (apiKey == null || apiKey.isBlank()) {
@@ -21,7 +22,11 @@ public class ConsultaGemini {
         this.client = Client.builder().apiKey(apiKey).build();
     }
 
-    public String traduzir(String texto) {
+    public static String traduzir(String texto) {
+        return INSTANCE.traduzirInterno(texto);
+    }
+
+    private String traduzirInterno(String texto) {
         if (texto == null || texto.isBlank() || texto.equalsIgnoreCase("N/A")) {
             return texto;
         }
