@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.Principal;
 
+import br.com.alura.screenmatch.Repository.SerieRepository;
 import br.com.alura.screenmatch.model.*;
 import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.ConverteDados;
@@ -16,8 +17,10 @@ public class Principal {
     private ConverteDados conversor=new ConverteDados();
     private final DateTimeFormatter  FORMATTER =DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private List<DadosSeries> listaSeries =new ArrayList<>();
-
-
+    private SerieRepository repositorio;
+    public Principal(SerieRepository repositorio) {
+        this.repositorio=repositorio;
+    }
 
 
     public void exibirMenu(){
@@ -138,7 +141,7 @@ public class Principal {
     }
 
     public void episodiosPorSerie(){
-        DadosSeries dadosSerie= getListaSeries();
+        DadosSeries dadosSerie= getDadosSeries();
         DadosTemporada dadosTemporada;
         List<DadosTemporada> listaTemporadas=new ArrayList<>();
         for(int i=1;i<=dadosSerie.totalTemporadas();i++){
@@ -155,7 +158,7 @@ public class Principal {
 
     }
 
-    public DadosSeries getListaSeries(){
+    public DadosSeries getDadosSeries(){
         System.out.println("digite o nome da serie para busca:");
         String nomeSerie = leitor.nextLine();
         String json = consumoApi.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
@@ -165,7 +168,9 @@ public class Principal {
 
 
     public void buscarSerieWeb(){
-        DadosSeries dados= getListaSeries();
+        DadosSeries dados= getDadosSeries();
+        Serie serie=new Serie(dados);
+        repositorio.save(serie);
         System.out.println(dados);
         listaSeries.add(dados);
 
